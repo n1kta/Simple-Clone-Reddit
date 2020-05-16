@@ -14,12 +14,13 @@
             <div class="col-md-12 d-flex justify-content-center">
                 <div class="card d-flex" style="width: 79%;">
                     <div class="card-body">
-                        <h5 class="card-title">{{ current_article.title }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">submitted in {{ current_article.created }} by <a href="{% url 'profile_view' current_article.user %}">{{ current_article.user }}</a> from <a href="{% url 'links' current_article.group %}">{{ current_article.group }}</a></h6>
-                        <p class="card-text">{{ current_article.description }}</p>
-                        {{ error }}
-                        <a href="{% url 'edit_article' current_article.id %}"><small>Edit</small></a>
-                        <a href="{% url 'delete_article' current_article.id %}"><small>Delete</small></a>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <h5 class="card-title">{{ form.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">submitted in {{ current_article.created }} by <a href="{% url 'profile_view' current_article.user %}">{{ current_article.user }}</a> from <a href="{% url 'links' current_article.group %}">{{ current_article.group }}</a></h6>
+                            <p class="card-text">{{ form.description }}</p>
+                            <button style="color: white; margin-bottom: 1.5%;" type="submit" class="btn btn-primary">Save</button>
+                        </form>
                         {% if user.is_authenticated %}
                             <div class="d-flex">
                                 <a href="{% url 'like' current_article.id %}"><button style="width: 40px;" type="button" class="btn btn-success">+</button></a></span>
@@ -92,8 +93,6 @@
                             <h5 class="card-title">{{ comment.user }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{ comment.get_date }}</h6>
                             <p class="card-text">{{ comment.text }}</p>
-                            <a href="{% url 'edit_comment' comment.article_id comment.id %}"><small>Edit</small></a>
-                            <a href="{% url 'delete_comment' comment.article_id comment.id %}"><small>Delete</small></a>
                             {% if user.is_authenticated %}
                             <div class="d-flex">
                                 <a href="{% url 'comments_like' current_article.id comment.id %}"><button style="width: 40px;" type="button" class="btn btn-success">+</button></a></span>

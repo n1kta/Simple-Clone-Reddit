@@ -62,6 +62,26 @@ def new_article(request):
         new_article.save()
         return redirect('home')
 
+def edit_article(request, article_id):
+    current_article = get_object_or_404(ArticlesModel, pk=article_id)
+    current_comments = CommentsModel.objects.filter(article_id=article_id)
+    article = ArticlesModel.objects.get(id=article_id)
+    if request.method == 'POST':
+        form = ArticlesForm(request.POST, instance=article) # instance - берет текущие данные с формы под aritcle_id
+        if form.is_valid():
+            form.save()
+            return redirect('article_view', article_id)
+    else:
+        form = ArticlesForm(instance=article)
+    return render(request, 'edit_post.html', {'form': form, 'current_article': current_article, 'current_comments': current_comments})
+    
+def delete_article(request, article_id):
+    article = ArticlesModel.objects.get(id=article_id)
+    comment = CommentsModel.objects.get(article_id=article_id)
+    article.delete()
+    comment.delete()
+    return redirect('home')
+
 # Link view
 
 def links(request, link_name):
@@ -114,3 +134,23 @@ def profile_post(request, profile_name):
 def profile_comments(request, profile_name):
     current_comments = CommentsModel.objects.filter(user=User.objects.get(username=profile_name))
     return render(request, 'profile_comments.html', {'current_comments': current_comments})
+
+# Comments view
+
+def edit_comment(request, article_id, comment_id):
+    current_article = get_object_or_404(ArticlesModel, pk=article_id)
+    current_comments = CommentsModel.objects.filter(article_id=article_id)
+    comment = CommentsModel.objects.get(id=comment_id)
+    if request.method == 'POST':
+        form = CommentsForm(request.POST, instance=comment) # instance - берет текущие данные с формы под aritcle_id
+        if form.is_valid():
+            form.save()
+            return redirect('article_view', article_id)
+    else:
+        form = CommentsForm(instance=comment)
+    return render(request, 'edit_comment.html', {'form': form, 'current_article': current_article, 'current_comments': current_comments})
+    
+def delete_comment(request, article_id, comment_id):
+    comment = CommentsModel.objects.get(id=comment_id)
+    comment.delete()
+    return redirect('article_view', article_id)

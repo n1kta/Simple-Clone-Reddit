@@ -7,6 +7,9 @@ from .models import ArticlesModel, LinkModel, CommentsModel
 class ArticlesForm(ModelForm):
     class Meta:
         model = ArticlesModel
+        widgets = {
+            'description': Textarea(attrs={'class': "form-control", 'id': "exampleFormControlTextarea1", 'rows': "3", 'placeholder': "Comments here..."}),
+        }
         fields = ['title', 'description', 'group']
 
 

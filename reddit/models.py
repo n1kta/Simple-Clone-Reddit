@@ -31,10 +31,7 @@ class CommentsModel(models.Model):
     def get_date(self):
         time = datetime.now()
         if self.created.day == time.day:
-            if time.hour - self.created.hour == 0:
-                return f"{((time.second - self.created.second) % 3600) // 60} minutes ago"
-            else:
-                return f"{time.hour - self.created.hour} hours ago"
+            return str(time.hour - self.created.hour) + " hours ago"
         else:
             if self.created.month == time.month:
                 return f"{time.day - self.created.day} days ago"
