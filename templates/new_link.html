@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section style="background: rgb(233, 236, 240);">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <h1 style="padding: 5%;">Create Subeddit</h1>
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 2.5%; margin-bottom: 2.5%;">
+        <div class="container">
+            <h3>New Subeddit</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Enter title</label>
+                    <br>
+                    {{ form.subbeddit }}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </section>
+{% endblock content %}

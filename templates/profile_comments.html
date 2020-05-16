@@ -1,0 +1,68 @@
+{% extends 'profile.html' %}
+{% load static %}
+
+{% block content %}
+    <section style="background: rgb(233, 236, 240);">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <h1 style="padding: 5%;">{{ user }}</h1>
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 2.5%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center">
+                        <div class="">
+                            <img src="{% static 'img/signup.png' %}" width="150px">
+                            <p>Joined: {{ user.date_joined|date:'d-m-Y' }}</p>
+                            <a class="btn btn-primary" href="{% url 'profile_post' user %}">Post</a>
+                            <a class="btn btn-primary" href="{% url 'profile_comments' user %}">Comments</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 2.5%;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-9">
+                    <div class="d-flex justify-content-start">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <select class="form-control" id="exampleFormControlSelect1" name="articles_sort" onChange="form.submit();">
+                                <option value="sort" hidden selected>Sort</option>
+                                <option value="top">Top</option>
+                                <option value="new">New</option>
+                                <option value="old">Old</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+
+    <section style="margin-top: 1%;">
+        <div class="container-fluid">
+            <div class="col-md-12">
+                {% for comment in current_comments %}
+                    <div class="card d-flex" style="background: rgb(233, 236, 240); width: 75%; margin-bottom: 1.5%;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ comment.user }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ comment.get_date }}</h6>
+                            <p class="card-text">{{ comment.text }}</p>
+                            <p style="margin-top: 1.5%;" class="card-text text-success">Like: {{ comment.likes.count }}</p>
+                            <a class="btn-link" href="#">reply</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

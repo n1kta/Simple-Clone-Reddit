@@ -1,0 +1,38 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+    <section style="margin-top: 2.5%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div style="width: 35%;" class="card text-center">
+                        <div class="card-header">
+                        Login
+                        </div>
+                        <div class="card-body">
+                            <img src="{% static 'img/signup.png' %}" width="150px">
+                            <p class="text-danger">{{ error }}</p>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="input-group mb-3 d-flex justify-content-center">
+                                    <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">@</span>
+                                    </div>
+                                    <input type="text" class="form-control" name="username" placeholder="Username">
+                                </div>
+                                <div class="input-group mb-3 d-flex justify-content-center">
+                                    <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">@</span>
+                                    </div>
+                                    <input type="password" class="form-control" name="password" placeholder="Password">
+                                </div>
+                                <button class="btn btn-primary" type="submit">Enter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

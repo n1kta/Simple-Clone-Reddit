@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section style="background: rgb(233, 236, 240);">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <h1 style="padding: 5%;">{{ current_article.group }}</h1>
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 2.5%;">
+        <div class="cotainer">
+            <div class="col-md-12 d-flex justify-content-center">
+                <div class="card d-flex" style="width: 79%;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ current_article.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">submitted in {{ current_article.created }} by <a href="{% url 'profile_view' current_article.user %}">{{ current_article.user }}</a> from <a href="{% url 'links' current_article.group %}">{{ current_article.group }}</a></h6>
+                        <p class="card-text">{{ current_article.description }}</p>
+                        {% if user.is_authenticated %}
+                            <div class="d-flex">
+                                <a href="{% url 'like' current_article.id %}"><button style="width: 40px;" type="button" class="btn btn-success">+</button></a></span>
+                                <a href="{% url 'dislike' current_article.id %}"><button style="width: 40px;" type="button" class="btn btn-danger">-</button></a></span>
+                            </div>
+                        {% else %}
+                        {% endif %}
+                        <p style="margin-top: 1.5%;" class="card-text text-success">Like: {{ current_article.likes.count }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section >
+        <div class="container">
+            <div class="col-md-12 d-flex justify-content-center">
+                
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 2.5%;">
+        <div class="container">
+                <div style="padding: 0;" class="col-md-12 card d-flex justify-content-center">
+                    <div class="card-body">
+                        {% if user.is_authenticated %}
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ comment.text }}
+                                </div>
+                                <button class="btn btn-primary auth-req" type="submit">Submit</button>
+                            </form>
+                        {% else %}
+                            <p>You must be <a href="{% url 'loginuser' %}">logged in</a> to leave a comment</p>
+                        {% endif %}
+                    </div>
+                </div>
+        </div>
+    </section>
+    
+    <section style="margin-top: 2.5%;">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="d-flex">
+                    <h1>Comments</h1>
+                    <span style="margin: auto 2%">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <select name="comments_sort" class="form-control" id="exampleFormControlSelect1" onChange="form.submit();">
+                                <option value="sort" hidden selected>Sort</option>
+                                <option value="top">Top</option>
+                                <option value="new">New</option>
+                                <option value="old">Old</option>
+                            </select>
+                        </form>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 1%;">
+        <div class="container">
+            <div class="col-md-12">
+                {% for comment in current_comments %}
+                    <div class="card d-flex" style="background: rgb(233, 236, 240); width: 75%; margin-bottom: 1.5%;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ comment.user }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ comment.get_date }}</h6>
+                            <p class="card-text">{{ comment.text }}</p>
+                            {% if user.is_authenticated %}
+                            <div class="d-flex">
+                                <a href="{% url 'comments_like' current_article.id comment.id %}"><button style="width: 40px;" type="button" class="btn btn-success">+</button></a></span>
+                                <a href="{% url 'comments_dislike' current_article.id comment.id %}"><button style="width: 40px;" type="button" class="btn btn-danger">-</button></a></span>
+                            </div>
+                            {% else %}
+                            {% endif %}
+                            <p style="margin-top: 1.5%;" class="card-text text-success">Like: {{ comment.likes.count }}</p>
+                            <a class="btn-link" href="#">reply</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

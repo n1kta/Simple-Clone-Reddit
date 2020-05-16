@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for article in articles %}
+        <div class="">
+            <p><a href="{% url 'article_view' article.id %}">{{ article.title }}</a></p>
+            <p>submitted in {{ article.created }} by {{ article.user }} from {{ article.group }}</p>
+            <p>Likes: {{ article.likes }}</p>
+        </div>
+    {% endfor %}
+{% endblock content %}
