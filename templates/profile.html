@@ -26,4 +26,28 @@
             </div>
         </div>
     </section>
+
+    <section style="margin-top: 1%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center">
+                        <a style="width: 15%;" class="btn btn-success" href="{% url 'changepassworduser' user.username %}">Change password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="margin-top: 1%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center">
+                        <a style="width: 15%;" class="btn btn-danger" href="{% url 'deleteuser' user.username %}">Delete account</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock content %}

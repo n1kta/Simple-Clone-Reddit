@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db import IntegrityError
 
+from reddit.models import CommentsModel, ArticlesModel
+
 def signupuser(request):
     if request.method == 'GET':
         return render(request, 'accounts/signup.html', {'form': UserCreationForm})
@@ -32,4 +34,18 @@ def loginuser(request):
 
 def logooutuser(request):
     logout(request)
+    return redirect('home')
+
+def changepassworduser(request, user_username):
+    user = User.objects.get(username=user_username)
+    if request.method == 'GET':
+        return render(request, 'accounts/changepassword.html')
+    else:
+        user.set_password(request.POST['change_password'])
+        user.save()
+        return redirect('loginuser')
+
+def deleteuser(request, user_username):
+    user = User.objects.get(username=user_username)
+    user.delete()
     return redirect('home')
